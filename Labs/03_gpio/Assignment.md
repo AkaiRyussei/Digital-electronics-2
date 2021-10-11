@@ -8,6 +8,7 @@ Link to your `Digital-electronics-2` GitHub repository:
 ### Data types in C
 
 1. Complete table.
+
 | **Data type** | **Number of bits** |       **Range**        | **Description**                 |
 | :-----------: | :----------------: | :--------------------: | :------------------------------ |
 |   `uint8_t`   |         8          |     0, 1, ..., 255     | Unsigned 8-bit integer          |

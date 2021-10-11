@@ -3,29 +3,29 @@ GccApplication1.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  0000018a  2**0
+  0 .data         00000000  00800100  00800100  000001a2  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000136  00000000  00000000  00000054  2**1
+  1 .text         0000014e  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  0000018a  2**0
+  2 .comment      00000030  00000000  00000000  000001a2  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000001bc  2**2
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000001d4  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000070  00000000  00000000  000001fc  2**0
+  4 .debug_aranges 00000070  00000000  00000000  00000214  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   000009d0  00000000  00000000  0000026c  2**0
+  5 .debug_info   00000a19  00000000  00000000  00000284  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000733  00000000  00000000  00000c3c  2**0
+  6 .debug_abbrev 0000073c  00000000  00000000  00000c9d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000003b1  00000000  00000000  0000136f  2**0
+  7 .debug_line   000003b8  00000000  00000000  000013d9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  000000a8  00000000  00000000  00001720  2**2
+  8 .debug_frame  000000a8  00000000  00000000  00001794  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000448  00000000  00000000  000017c8  2**0
+  9 .debug_str    00000451  00000000  00000000  0000183c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    000000da  00000000  00000000  00001c10  2**0
+ 10 .debug_loc    00000092  00000000  00000000  00001c8d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000050  00000000  00000000  00001cea  2**0
+ 11 .debug_ranges 00000050  00000000  00000000  00001d1f  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -66,7 +66,7 @@ Disassembly of section .text:
   70:	de bf       	out	0x3e, r29	; 62
   72:	cd bf       	out	0x3d, r28	; 61
   74:	0e 94 76 00 	call	0xec	; 0xec <main>
-  78:	0c 94 99 00 	jmp	0x132	; 0x132 <_exit>
+  78:	0c 94 a5 00 	jmp	0x14a	; 0x14a <_exit>
 
 0000007c <__bad_interrupt>:
   7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -168,42 +168,60 @@ int main(void)
  102:	87 e2       	ldi	r24, 0x27	; 39
  104:	90 e0       	ldi	r25, 0x00	; 0
  106:	0e 94 40 00 	call	0x80	; 0x80 <GPIO_config_output>
+	GPIO_write_low(&PORTC, LED_RED);
+ 10a:	60 e0       	ldi	r22, 0x00	; 0
+ 10c:	88 e2       	ldi	r24, 0x28	; 40
+ 10e:	90 e0       	ldi	r25, 0x00	; 0
+ 110:	0e 94 5d 00 	call	0xba	; 0xba <GPIO_write_low>
 
     // Configure Push button at port D and enable internal pull-up resistor
-	GPIO_config_input_pullup(&DDRC, BTN);
- 10a:	65 e0       	ldi	r22, 0x05	; 5
- 10c:	87 e2       	ldi	r24, 0x27	; 39
- 10e:	90 e0       	ldi	r25, 0x00	; 0
- 110:	0e 94 4c 00 	call	0x98	; 0x98 <GPIO_config_input_pullup>
+	GPIO_config_input_pullup(&DDRD, BTN);
+ 114:	62 e0       	ldi	r22, 0x02	; 2
+ 116:	8a e2       	ldi	r24, 0x2A	; 42
+ 118:	90 e0       	ldi	r25, 0x00	; 0
+ 11a:	0e 94 4c 00 	call	0x98	; 0x98 <GPIO_config_input_pullup>
+    {
+		
+		//_delay_ms(10);
+		
+		//if(GPIO_read(&PORTD, BTN) == 1)
+		if (bit_is_clear(PIND,BTN))
+ 11e:	4a 99       	sbic	0x09, 2	; 9
+ 120:	fe cf       	rjmp	.-4      	; 0x11e <main+0x32>
+		
+		{
+			
+        // Pause several milliseconds
+        //_delay_ms(BLINK_DELAY);
+		GPIO_toggle(&PORTB, LED_GREEN);
+ 122:	65 e0       	ldi	r22, 0x05	; 5
+ 124:	85 e2       	ldi	r24, 0x25	; 37
+ 126:	90 e0       	ldi	r25, 0x00	; 0
+ 128:	0e 94 6a 00 	call	0xd4	; 0xd4 <GPIO_toggle>
+		GPIO_toggle(&PORTC, LED_RED);
+ 12c:	60 e0       	ldi	r22, 0x00	; 0
+ 12e:	88 e2       	ldi	r24, 0x28	; 40
+ 130:	90 e0       	ldi	r25, 0x00	; 0
+ 132:	0e 94 6a 00 	call	0xd4	; 0xd4 <GPIO_toggle>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 114:	2f ef       	ldi	r18, 0xFF	; 255
- 116:	89 e6       	ldi	r24, 0x69	; 105
- 118:	98 e1       	ldi	r25, 0x18	; 24
- 11a:	21 50       	subi	r18, 0x01	; 1
- 11c:	80 40       	sbci	r24, 0x00	; 0
- 11e:	90 40       	sbci	r25, 0x00	; 0
- 120:	e1 f7       	brne	.-8      	; 0x11a <main+0x2e>
- 122:	00 c0       	rjmp	.+0      	; 0x124 <main+0x38>
- 124:	00 00       	nop
-    while (1)
-    {
-        // Pause several milliseconds
-       _delay_ms(BLINK_DELAY);
-		//GPIO_toggle(&PORTB, LED_GREEN);
-		GPIO_toggle(&PORTC, LED_RED);
- 126:	60 e0       	ldi	r22, 0x00	; 0
- 128:	88 e2       	ldi	r24, 0x28	; 40
- 12a:	90 e0       	ldi	r25, 0x00	; 0
- 12c:	0e 94 6a 00 	call	0xd4	; 0xd4 <GPIO_toggle>
- 130:	f1 cf       	rjmp	.-30     	; 0x114 <main+0x28>
+ 136:	2f ef       	ldi	r18, 0xFF	; 255
+ 138:	89 e6       	ldi	r24, 0x69	; 105
+ 13a:	98 e1       	ldi	r25, 0x18	; 24
+ 13c:	21 50       	subi	r18, 0x01	; 1
+ 13e:	80 40       	sbci	r24, 0x00	; 0
+ 140:	90 40       	sbci	r25, 0x00	; 0
+ 142:	e1 f7       	brne	.-8      	; 0x13c <main+0x50>
+ 144:	00 c0       	rjmp	.+0      	; 0x146 <main+0x5a>
+ 146:	00 00       	nop
+ 148:	ea cf       	rjmp	.-44     	; 0x11e <main+0x32>
 
-00000132 <_exit>:
- 132:	f8 94       	cli
+0000014a <_exit>:
+ 14a:	f8 94       	cli
 
-00000134 <__stop_program>:
- 134:	ff cf       	rjmp	.-2      	; 0x134 <__stop_program>
+0000014c <__stop_program>:
+ 14c:	ff cf       	rjmp	.-2      	; 0x14c <__stop_program>

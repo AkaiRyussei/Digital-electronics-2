@@ -37,7 +37,7 @@ void GPIO_config_input_nopull(volatile uint8_t *reg_name, uint8_t pin_num)
 /**********************************************************************
  * Function: GPIO_config_input_pullup()
  * Purpose:  Configure one input pin and enable pull-up.
- * Input:    reg_name - Address of Data Direction Register, such as &DDRB
+ * Input:    reg_name - Address of Data Direction Register, such as &DDRB	
  *           pin_num - Pin designation in the interval 0 to 7
  * Returns:  none
  **********************************************************************/

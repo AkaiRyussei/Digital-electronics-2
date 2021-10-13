@@ -18,6 +18,15 @@ Consider an n-bit number that we increment based on the clock signal. If we reac
 
 2. Shields are boards that can be attached to an Arduino board, significantly expand its capabilities, and makes prototyping much faster. See schematic of [Multi-function shield](../../Docs/arduino_shield.pdf) and find out the connection of four LEDs (D1, D2, D3, D4) and three push buttons (S1-A1, S2-A2, S3-A3).
 
+D1 = PB5
+D2 = PB4
+D3 = PB3
+D4 = PB2
+
+
+S1-A1 = PC1
+S2-A2 = PC2
+S3-A3 = PC3
 &nbsp;
 
 &nbsp;

@@ -767,7 +767,7 @@ ISR(ADC_vect)
  4ba:	92 40       	sbci	r25, 0x02	; 2
  4bc:	07 97       	sbiw	r24, 0x07	; 7
  4be:	80 f4       	brcc	.+32     	; 0x4e0 <__EEPROM_REGION_LENGTH__+0xe0>
-		//down
+		//select
 		lcd_gotoxy(8, 1);
  4c0:	61 e0       	ldi	r22, 0x01	; 1
  4c2:	88 e0       	ldi	r24, 0x08	; 8

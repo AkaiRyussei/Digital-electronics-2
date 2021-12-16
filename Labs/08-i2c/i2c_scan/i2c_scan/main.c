@@ -19,6 +19,7 @@
 /* Includes ----------------------------------------------------------*/
 #include <avr/io.h>         // AVR device-specific IO definitions
 #include <avr/interrupt.h>  // Interrupts standard C library for AVR-GCC
+#include <stdbool.h>
 #include "timer.h"          // Timer library for AVR-GCC
 #include <stdlib.h>         // C library. Needed for conversion function
 #include "uart.h"           // Peter Fleury's UART library
@@ -30,6 +31,8 @@ typedef enum {              // FSM declaration
     STATE_SEND,
     STATE_ACK
 } state_t;
+
+_Bool change = true; 
 
 /* Function definitions ----------------------------------------------*/
 /**********************************************************************
@@ -78,9 +81,8 @@ ISR(TIMER1_OVF_vect)
 {
     static state_t state = STATE_IDLE;  // Current state of the FSM
     static uint8_t addr = 0x5c;            // I2C slave address
-    uint8_t result = 1;                 // ACK result from the bus
+    uint8_t result = 1;                 // ACK result from the bus 
     char uart_string[2] = "00"; // String for converting numbers by itoa()
-
     // FSM
     switch (state)
     {
@@ -111,9 +113,16 @@ ISR(TIMER1_OVF_vect)
         // +------------------------+------------+
         result = twi_start((addr<<1) + TWI_WRITE);
 		
+		
 			
 		// TEMP + HUMID ==============
-		twi_write(0x00);
+		
+		if (change == true)
+			twi_write(0x02); //0x00 for humid and 0x02 for temperature
+		else 
+			twi_write(0x00);
+			
+		change = !change;
 		
 		twi_stop();
 		result = twi_start((addr<<1) + TWI_READ);
@@ -128,6 +137,14 @@ ISR(TIMER1_OVF_vect)
 		uart_puts(".");
 		uart_puts(uart_string);
 		uart_puts(" ");
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		//===========================
         //twi_stop();

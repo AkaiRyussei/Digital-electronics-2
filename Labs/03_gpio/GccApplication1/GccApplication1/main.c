@@ -12,7 +12,7 @@
 
 /* Defines -----------------------------------------------------------*/
 #define LED_GREEN   PB5     // AVR pin where green LED is connected
-#define LED_RED		PC0
+#define LED_RED		PC1
 #define BTN			PD2
 #define BLINK_DELAY 500
 #define 	_BV(bit)   (1 << (bit))

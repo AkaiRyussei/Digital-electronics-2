@@ -164,12 +164,12 @@ int main(void)
 
     // Configure the second LED at port C
 	GPIO_config_output(&DDRC, LED_RED);
- 100:	60 e0       	ldi	r22, 0x00	; 0
+ 100:	61 e0       	ldi	r22, 0x01	; 1
  102:	87 e2       	ldi	r24, 0x27	; 39
  104:	90 e0       	ldi	r25, 0x00	; 0
  106:	0e 94 40 00 	call	0x80	; 0x80 <GPIO_config_output>
 	GPIO_write_low(&PORTC, LED_RED);
- 10a:	60 e0       	ldi	r22, 0x00	; 0
+ 10a:	61 e0       	ldi	r22, 0x01	; 1
  10c:	88 e2       	ldi	r24, 0x28	; 40
  10e:	90 e0       	ldi	r25, 0x00	; 0
  110:	0e 94 5d 00 	call	0xba	; 0xba <GPIO_write_low>
@@ -199,7 +199,7 @@ int main(void)
  126:	90 e0       	ldi	r25, 0x00	; 0
  128:	0e 94 6a 00 	call	0xd4	; 0xd4 <GPIO_toggle>
 		GPIO_toggle(&PORTC, LED_RED);
- 12c:	60 e0       	ldi	r22, 0x00	; 0
+ 12c:	61 e0       	ldi	r22, 0x01	; 1
  12e:	88 e2       	ldi	r24, 0x28	; 40
  130:	90 e0       	ldi	r25, 0x00	; 0
  132:	0e 94 6a 00 	call	0xd4	; 0xd4 <GPIO_toggle>

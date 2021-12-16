@@ -63,6 +63,7 @@ The libraries used, are libraries used in previous labs :
 * gpio.h          : Contains functions for controlling AVRs' gpio pin(s).
 * util/delay.h    : Contains delay functions
 
+
 <a name="main"></a>
 
 ## Main application
